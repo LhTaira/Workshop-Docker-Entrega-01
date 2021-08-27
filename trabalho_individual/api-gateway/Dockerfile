@@ -4,3 +4,4 @@ ENV PATH="./node_modules/.bin:$PATH"
 COPY . .
 RUN yarn
 CMD ["yarn", "watch"]
+EXPOSE 7000

@@ -1,0 +1,28 @@
+version: '3.8'
+
+services: 
+  mysqldb:
+    image: mysql:5.7.20
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: db
+    ports:
+      - 7200:3306
+    volumes: 
+      - ./db-config:/etc/mysql:rw
+      - ./db-data:/var/lib/mysql
+      - ./db/backup/files/:/data_backup/data
+
+  chat-service:
+    container_name: chat-service
+    build:
+        context: .
+        dockerfile: Dockerfile
+    ports:
+        - 7100:7100
+    depends_on:
+        - mysqldb
+    volumes:
+        - .:/app
+        - /app/node_modules
