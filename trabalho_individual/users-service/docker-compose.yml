@@ -1,0 +1,28 @@
+version: '3.8'
+
+services: 
+  users-service-db:
+    image: mysql:5.7.20
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: db
+    ports:
+      - 7201:3306
+    volumes: 
+      - ./db-config:/etc/mysql:rw
+      - ./db-data:/var/lib/mysql
+      - ./db/backup/files/:/data_backup/data
+
+  users-service:
+    container_name: users-service
+    build:
+        context: .
+        dockerfile: Dockerfile
+    ports:
+        - 7101:7101
+    depends_on:
+        - users-service-db
+    volumes:
+        - .:/app
+        - /app/node_modules
