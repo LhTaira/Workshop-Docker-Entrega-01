@@ -3,5 +3,5 @@ WORKDIR /app
 ENV PATH="./node_modules/.bin:$PATH"
 COPY . .
 RUN yarn
-CMD ["yarn", "watch"]
+CMD ["sh", "-c", "yarn db:migrate ; yarn watch"]
 EXPOSE 7101
